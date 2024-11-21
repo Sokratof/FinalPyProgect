@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create a Task</h2>
+    <form method="post" class="mt-3" action="{% url 'create_task' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Create Task</button>
+    </form>
+
+    <h3 class="mt-5">List of Tasks</h3>
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Assigned To</th>
+            <th>Completed</th>
+            <th>Approved</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.number }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.assign.username }}</td>
+            <td>{{ task.completed|yesno:"Yes,No" }}</td>
+            <td>{{ task.approved|yesno:"Yes,No" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No tasks available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

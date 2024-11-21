@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+Workers Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Workers Dashboard</h2>
+
+    <h3 class="mt-5">Incomplete Tasks</h3>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Assigned To</th>
+                <th>Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.number }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.assign.username }}</td>
+                <td>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_number" value="{{ task.number }}">
+                        <button type="submit" class="btn btn-success">Complete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No incomplete tasks available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
